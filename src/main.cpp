@@ -2,11 +2,23 @@
 #include <Adafruit_MPU6050.h>
 #include <Adafruit_Sensor.h>
 #include <time.h>
-
+#include <Servo.h>
 
 //SETUP 
 
 Adafruit_MPU6050 mpu;
+
+Servo servoDroit;
+Servo servoGauche;
+
+
+float angle_voulu = -1;
+float angle_actuelle = 0;
+
+float vitesse_moteur = 0;
+float difference = 0;
+
+int correction = 0;
 
 
 void setup() {
@@ -20,28 +32,45 @@ void setup() {
 
   Serial.println("Capteur trouvé");
 
+
+  servoDroit.attach(11);
+  servoGauche.attach(10);
+  servoGauche.write(90);
+  servoDroit.write(90);
+
+
+  mpu.setAccelerometerRange(MPU6050_RANGE_16_G);
+  mpu.setGyroRange(MPU6050_RANGE_250_DEG);
+  mpu.setFilterBandwidth(MPU6050_BAND_21_HZ);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
 
-  sensors_event_t accel, gyrroscope, temp;
-
-  mpu.getEvent(&accel, &gyrroscope, &temp);
-
- 
+  sensors_event_t a, g, temp;
+  mpu.getEvent(&a, &g, &temp);
+  
 
 
-  Serial.print("Gyroscope ");
-  Serial.print("X: ");
-  Serial.print(gyrroscope.gyro.x, 1);
-  Serial.print(" rps, ");
-  Serial.print("Y: ");
-  Serial.print(gyrroscope.gyro.y, 1);
-  Serial.print(" rps, ");
-  Serial.print("Z: ");
-  Serial.print(gyrroscope.gyro.z, 1);
-  Serial.println(" rps");
+  angle_actuelle = a.acceleration.z;
+
+  difference = (angle_voulu-angle_actuelle);
+
+  vitesse_moteur = difference/6*90;
+
+  if(difference<1 && difference >-1){
+    vitesse_moteur= vitesse_moteur/5;
+  }
+
+
+
+  servoGauche.write(90+vitesse_moteur);
+  servoDroit.write(90-vitesse_moteur);
+
+  delay(50);
+  
+
+  
 
 
 }
