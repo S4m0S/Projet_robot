@@ -12,7 +12,7 @@ Servo servoDroit;
 Servo servoGauche;
 
 
-float angle_voulu = -1;
+float angle_voulu = -1.4;
 float angle_actuelle = 0;
 
 float vitesse_moteur = 0;
@@ -56,18 +56,27 @@ void loop() {
 
   difference = (angle_voulu-angle_actuelle);
 
-  vitesse_moteur = difference/6*90;
+  vitesse_moteur = difference/25*90;
 
-  if(difference<1 && difference >-1){
+  if(difference<-0.5 && difference >-1.5){
     vitesse_moteur= vitesse_moteur/5;
+  }
+  else{
+    //vitesse_moteur=vitesse_moteur*2;
   }
 
 
 
-  servoGauche.write(90+vitesse_moteur);
-  servoDroit.write(90-vitesse_moteur);
+  if(vitesse_moteur<10 && vitesse_moteur>-10){
+    servoGauche.write(92);
+    servoDroit.write(90);
+  }
+  else{
+    servoGauche.write(90+vitesse_moteur);
+    servoDroit.write(90-vitesse_moteur);
+  }
 
-  delay(50);
+  delay(40);
   
 
   
