@@ -17,11 +17,11 @@ Servo servoDroit;
 Servo servoGauche;
 
 
-float correcteur_Kp = 25;        // correcteur à action proportionelle; correcteur 'P'
+float correcteur_Kp = 40;        // correcteur à action proportionelle; correcteur 'P'
 
-float correcteur_Ki = 3;        // correcteur à action intégrale; correcteur 'I'
+float correcteur_Ki = 6.5;        // correcteur à action intégrale; correcteur 'I'
 
-float correcteur_Kd = 20;        // correcteur à action dérivée; correcteur 'D'      Dérivée de l'erreur donc ce calcul grâce à l'acceleration
+float correcteur_Kd = 15;        // correcteur à action dérivée; correcteur 'D'      Dérivée de l'erreur donc ce calcul grâce à l'acceleration
 
 
 float Es = 0;                   // Erreur du système E(s)
